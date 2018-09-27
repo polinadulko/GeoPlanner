@@ -28,13 +28,25 @@ Without internet connection some features of the app won't be available. The app
 ## 3 System Requirements
 To run "GeoPlanner" on your device iOS 9.0 or higher is required.
 ### 3.1 Functional Requirements
-1. The app will display a list of tasks sorted by date (which should be indicated when creating a new task) and minimum distance to the place
-2. The user will be able to add a new task and specify it's details such as date and location
-3. The user will be able to enable automatic carry-over of the task day by day until it’s checked as done
-4. The app will provide managing tasks using gestures (swipe left to mark it as complete, swipe right to delete it)
-5. The system will show information about nearest places both in list and on the map.
-6. Information about nearest places will be automatically updated when the device’s location changes significantly (at least 300 meters)
-7. The app will functionate properly in case if internet connection is not available
+The app will:
+1. Display a list of tasks in a form of table with two columns
+1.2 First column will display tasks, second will display distance to nearest place associated with it
+2. Divide tasks in the list by date
+3. Sort tasks by minimum distance to the place
+4. Provide managing tasks using gestures (swipe left to mark it as complete, swipe right to delete it)
+5. Show information about nearest places both in list and on the map
+5.2 Display info only about places that are open now
+5.3 Information in the list will contain name, address and photos of the place
+5.4 Marker on the map will contain only name of the place
+6. Functionate properly in case if internet connection is not available
+7. Automatically update information connected with location when the device’s location changes significantly (300 meters)
+
+The user will be able to:
+1. Add a new task and specify it's details such as date and location
+1.1 Choose whether to connect task with a particular place or not
+1.2 Choose type of place or enter keyword associated with the place
+2. Enable automatic carry-over of the task day by day until it’s checked as done
+
 ### 3.2 Non-Functional Requirements
 #### 3.2.1 Software quality attributes
 1. Avoiding draining a device's battery  
