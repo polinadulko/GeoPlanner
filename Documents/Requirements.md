@@ -23,6 +23,7 @@ Window for adding a new task allows user to specify characteristics of the task 
 ![alt text](https://github.com/polinadulko/GeoPlanner/blob/master/Mockups/AddingNewTask.png)
 
 ### 2.3 User Characteristics
+"GeoPlanner" would be useful for people who like to create to-do lists, plan their day and want to save their time by giving priority to some tasks based on the place they are at.
 ### 2.4 Assumptions and Dependencies
 Without internet connection some features of the app won't be available. The app uses internet connection to get information about user's current location, nearest places for all of the tasks and to load the map. 
 ## 3 System Requirements
@@ -53,5 +54,6 @@ The user will be able to:
 Update data about user's location only when there has been a significant change in the device's location, for example 300 meters.
 2. Security  
 Explain a user how the app will use location data while getting a permission to access it and provide the security of the data.
-### 3.2.2 External interfaces
+#### 3.2.2 External interfaces
+The app should have a user's permission to get current location using Core Location framework. Core Location uses GPS and Wi-Fi to gather information about the device's location. 
 ## 4.Analogues
