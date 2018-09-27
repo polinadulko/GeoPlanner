@@ -30,14 +30,14 @@ To run "GeoPlanner" on your device iOS 9.0 or higher is required.
 ### 3.1 Functional Requirements
 The app will:
 1. Display a list of tasks in a form of table with two columns  
-1.2 First column will display tasks, second will display distance to nearest place associated with it
+1.1 First column will display tasks, second will display distance to nearest place associated with it
 2. Divide tasks in the list by date
 3. Sort tasks by minimum distance to the place
 4. Provide managing tasks using gestures (swipe left to mark it as complete, swipe right to delete it)
 5. Show information about nearest places both in list and on the map  
-5.2 Display info only about places that are open now  
-5.3 Information in the list will contain name, address and photos of the place  
-5.4 Marker on the map will contain only name of the place  
+5.1 Display info only about places that are open now  
+5.2 Information in the list will contain name, address and photos of the place  
+5.3 Marker on the map will contain only name of the place  
 6. Functionate properly in case if internet connection is not available
 7. Automatically update information connected with location when the device’s location changes significantly (300 meters)
 
