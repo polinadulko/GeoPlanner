@@ -34,11 +34,12 @@ To run "GeoPlanner" on your device iOS 9.0 or higher is required.
 4. The app will provide managing tasks using gestures (swipe left to mark it as complete, swipe right to delete it)
 5. The system will show information about nearest places both in list and on the map.
 6. Information about nearest places will be automatically updated when the device’s location changes significantly (at least 300 meters)
-7. Provide proper functioning of the app in case if internet connection is not available
+7. The app will functionate properly in case if internet connection is not available
 ### 3.2 Non-Functional Requirements
 #### 3.2.1 Software quality attributes
 1. Avoiding draining a device's battery  
-Most location-based apps are power-intensive because of permanent tracking of the user's location. One of the ways to organize getting data about user's location is to update it only when there is has been a significant change in the device's location, for example 300 meters.
+Update data about user's location only when there has been a significant change in the device's location, for example 300 meters.
 2. Security  
-It's important to explain a user how the app will use location data while getting a permission to access it and provide the security of the data.
+Explain a user how the app will use location data while getting a permission to access it and provide the security of the data.
+### 3.2.2 External interfaces
 ## 4.Analogues
