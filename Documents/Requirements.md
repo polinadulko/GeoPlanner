@@ -2,7 +2,7 @@
 ## 1 Introduction  
 "GeoPlanner" is a location-based task manager for iOS. It will help you organize your plans by associating tasks with particular locations. The list of tasks will be divided by days and sorted by distance to the nearest associated place. Also the app will provide you with detailed information about nearest places connected to the task such as name, address, location on the map and photos. It will help user choose the most suitable place and find it nearby. "GeoPlanner" will make completing your everyday tasks easier.
 
-The app was built with Swift and is available on iOS 9.0 or higher.
+The app was built with Swift and is available on iOS 10.0 or higher.
 
 ## 2 User Requirements
 ### 2.1 Software Interfaces
@@ -27,7 +27,7 @@ Window for adding a new task allows user to specify characteristics of the task 
 ### 2.4 Assumptions and Dependencies
 Without internet connection some features of the app won't be available. The app uses internet connection to get information about user's current location, nearest places for all of the tasks and to load the map. 
 ## 3 System Requirements
-To run "GeoPlanner" on your device iOS 9.0 or higher is required.
+To run "GeoPlanner" on your device iOS 10.0 or higher is required.
 ### 3.1 Functional Requirements
 The app will:
 1. Display a list of tasks in a form of table with two columns  
@@ -57,3 +57,7 @@ Explain a user how the app will use location data while getting a permission to 
 #### 3.2.2 External interfaces
 The app should have a user's permission to get current location using Core Location framework. Core Location uses GPS and Wi-Fi to gather information about the device's location. 
 ## 4.Analogues
+1. [Reminders](https://itunes.apple.com/by/app/reminders/id1108187841?mt=8) is a default app for iOS that allows to create to-do lists and set reminders. That app can connect reminders to geographical coordinates. It allows user to choose the address where he wants to be reminded and choose whether he wants to get a reminder when he leaves or arrives at that location.
+2. [gTasks](https://itunes.apple.com/by/app/gtasks/id428249408?mt=8) is a task manager which allows to set due dates for tasks, customize repeating tasks and set reminders. The user can set location-based reminders and get a reminder at a particular location.   
+
+The main difference of GeoPlanner is that it associates a task with a place to sort tasks and show information about nearest places while analogues use location to send location-based reminders.
