@@ -52,7 +52,9 @@ The user will be able to:
 #### 3.2.1 Software quality attributes
 1. Avoiding draining a device's battery  
 Update data about user's location only when there has been a significant change in the device's location, for example 300 meters.
-2. Security  
+2. Flexible interface
+The app should support different screen sizes.
+3. Security  
 Explain a user how the app will use location data while getting a permission to access it and provide the security of the data.
 #### 3.2.2 External interfaces
 The app should have a user's permission to get current location using Core Location framework. Core Location uses GPS and Wi-Fi to gather information about the device's location. 
