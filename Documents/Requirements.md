@@ -34,7 +34,7 @@ The app will:
 1.1 First column will display tasks, second will display distance to nearest place associated with it
 2. Divide tasks in the list by date
 3. Sort tasks by minimum distance to the place
-4. Provide managing tasks using gestures (swipe left to mark it as complete, swipe right to delete it)
+4. Provide managing tasks using gestures (swipe left to mark it as complete)
 5. Show information about nearest places both in list and on the map  
 5.1 Display info only about places that are open now  
 5.2 Information in the list will contain name, address and photos of the place  
