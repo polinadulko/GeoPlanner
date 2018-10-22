@@ -3,4 +3,5 @@
 
 The app was built with Swift and is available on iOS 10.0 or higher.
 
-[Requirements Document](https://github.com/polinadulko/GeoPlanner/blob/master/Documents/Requirements.md)
+[Requirements Document](https://github.com/polinadulko/GeoPlanner/blob/master/Documents/Requirements.md)  
+[UML diagrams](https://github.com/polinadulko/GeoPlanner/tree/master/Diagrams)
