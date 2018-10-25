@@ -1,12 +1,12 @@
 # Requirements Document
 ## 1 Introduction  
-"GeoPlanner" is a location-based task manager for iOS. It will help you organize your plans by associating tasks with particular locations. The list of tasks will be divided by days and sorted by distance to the nearest associated place. Also the app will provide you with detailed information about nearest places connected to the task such as name, address, location on the map and photos. It will help user choose the most suitable place and find it nearby. "GeoPlanner" will make completing your everyday tasks easier.
+"GeoPlanner" is a location-based task manager for iOS. It will help you organize your plans by associating tasks with particular locations. The list of tasks will be divided by days and sorted by distance to the nearest associated place. Also the app will provide you with detailed information about nearest places connected to the task such as name, address and location on the map. It will help user choose the most suitable place and find it nearby. "GeoPlanner" will make completing your everyday tasks easier.
 
 The app was built with Swift and is available on iOS 10.0 or higher.
 
 ## 2 User Requirements
 ### 2.1 Software Interfaces
-The project interacts with Google Maps and Google Places API. Google Maps allows to add map which responses to user gestures and add markers of nearest places to the map. Google Places is used to get a list of nearest places of a particular type and get information about the place such as geographical coordinates, name, address, opening hours and photos. Photos are uploaded using Alamofire.
+The project interacts with Google Maps and Google Places API. Google Maps allows to add map which responses to user gestures and add markers of nearest places to the map. Google Places is used to get a list of nearest places of a particular type and get information about the place such as geographical coordinates, name, address and opening hours. Photos are uploaded using Alamofire.
 
 ### 2.2 User Interfaces
 The GUI of the app was prototyped using mockups. 
@@ -37,7 +37,7 @@ The app will:
 4. Provide managing tasks using gestures (swipe left to mark it as complete)
 5. Show information about nearest places both in list and on the map  
 5.1 Display info only about places that are open now  
-5.2 Information in the list will contain name, address and photos of the place  
+5.2 Information in the list will contain name, address and distance to the place  
 5.3 Marker on the map will contain only name of the place  
 6. Functionate properly in case if internet connection is not available
 7. Automatically update information connected with location when the device’s location changes significantly (300 meters)
