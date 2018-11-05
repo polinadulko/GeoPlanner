@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		523C8052218846B3006ACF2B /* PlaceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523C8051218846B3006ACF2B /* PlaceTableViewCell.swift */; };
 		527B83352181DC2E00D7344A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527B83342181DC2E00D7344A /* AppDelegate.swift */; };
 		527B83372181DC2E00D7344A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527B83362181DC2E00D7344A /* ViewController.swift */; };
 		527B833A2181DC2E00D7344A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 527B83382181DC2E00D7344A /* Main.storyboard */; };
@@ -17,11 +18,14 @@
 		527B834C2182136E00D7344A /* PlacesOnTheMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527B834B2182136E00D7344A /* PlacesOnTheMapViewController.swift */; };
 		52FB3FF62186EC820008B3EB /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FB3FF52186EC820008B3EB /* Extensions.swift */; };
 		52FB3FF82186FBA00008B3EB /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FB3FF72186FBA00008B3EB /* TaskTableViewCell.swift */; };
+		52FB3FFC2187988A0008B3EB /* InfoAboutPlacesTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FB3FFB2187988A0008B3EB /* InfoAboutPlacesTabBarController.swift */; };
+		52FB3FFE218798CC0008B3EB /* ListOfPlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FB3FFD218798CC0008B3EB /* ListOfPlacesViewController.swift */; };
 		BD78B36B577069E2692CF200 /* Pods_GeoPlanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D444AEAB592F44A4F4C6603 /* Pods_GeoPlanner.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0BF9180FA8B5AE9ACEA9EBCC /* Pods-GeoPlanner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeoPlanner.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GeoPlanner/Pods-GeoPlanner.debug.xcconfig"; sourceTree = "<group>"; };
+		523C8051218846B3006ACF2B /* PlaceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceTableViewCell.swift; sourceTree = "<group>"; };
 		527B83312181DC2E00D7344A /* GeoPlanner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GeoPlanner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		527B83342181DC2E00D7344A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		527B83362181DC2E00D7344A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -34,6 +38,8 @@
 		527B834B2182136E00D7344A /* PlacesOnTheMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesOnTheMapViewController.swift; sourceTree = "<group>"; };
 		52FB3FF52186EC820008B3EB /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		52FB3FF72186FBA00008B3EB /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
+		52FB3FFB2187988A0008B3EB /* InfoAboutPlacesTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoAboutPlacesTabBarController.swift; sourceTree = "<group>"; };
+		52FB3FFD218798CC0008B3EB /* ListOfPlacesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListOfPlacesViewController.swift; sourceTree = "<group>"; };
 		6D444AEAB592F44A4F4C6603 /* Pods_GeoPlanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GeoPlanner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7637D92269A9696FB94B7343 /* Pods-GeoPlanner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeoPlanner.release.xcconfig"; path = "Pods/Target Support Files/Pods-GeoPlanner/Pods-GeoPlanner.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -87,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				52FB3FF72186FBA00008B3EB /* TaskTableViewCell.swift */,
+				523C8051218846B3006ACF2B /* PlaceTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -96,6 +103,8 @@
 			children = (
 				527B83492181E5CA00D7344A /* AddTaskViewController.swift */,
 				527B83362181DC2E00D7344A /* ViewController.swift */,
+				52FB3FFB2187988A0008B3EB /* InfoAboutPlacesTabBarController.swift */,
+				52FB3FFD218798CC0008B3EB /* ListOfPlacesViewController.swift */,
 				527B834B2182136E00D7344A /* PlacesOnTheMapViewController.swift */,
 				52FB3FF52186EC820008B3EB /* Extensions.swift */,
 			);
@@ -246,8 +255,11 @@
 				52FB3FF62186EC820008B3EB /* Extensions.swift in Sources */,
 				527B834A2181E5CA00D7344A /* AddTaskViewController.swift in Sources */,
 				527B834C2182136E00D7344A /* PlacesOnTheMapViewController.swift in Sources */,
+				52FB3FFE218798CC0008B3EB /* ListOfPlacesViewController.swift in Sources */,
 				527B83352181DC2E00D7344A /* AppDelegate.swift in Sources */,
 				527B833D2181DC2E00D7344A /* GeoPlanner.xcdatamodeld in Sources */,
+				52FB3FFC2187988A0008B3EB /* InfoAboutPlacesTabBarController.swift in Sources */,
+				523C8052218846B3006ACF2B /* PlaceTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

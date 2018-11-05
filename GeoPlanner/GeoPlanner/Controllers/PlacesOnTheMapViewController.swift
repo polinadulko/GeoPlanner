@@ -9,12 +9,16 @@
 import UIKit
 import GoogleMaps
 import CoreLocation
+import CoreData
 
 class PlacesOnTheMapViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
     let locationManager = CLLocationManager()
     var mapView: GMSMapView?
     var currentLocationCoordinate: CLLocationCoordinate2D?
     let currentLocationMarker = GMSMarker()
+    var task: NSManagedObject?
+    let cameraZoom: Float = 16
+    let cameraZoomForMarker: Float = 18
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,13 +35,14 @@ class PlacesOnTheMapViewController: UIViewController, CLLocationManagerDelegate,
             currentLocationMarker.title = "You're here"
             currentLocationMarker.map = map
             currentLocationMarker.appearAnimation = GMSMarkerAnimation.pop
-            currentLocationMarker.icon = GMSMarker.markerImage(with: .green)
+            currentLocationMarker.icon = GMSMarker.markerImage(with: UIColor.green)
         }
     }
     
+    //MARK:- GMSMapViewDelegate
     func didTapMyLocationButton(for mapView: GMSMapView) -> Bool {
         if currentLocationCoordinate != nil {
-            let camera = GMSCameraPosition.camera(withTarget: currentLocationCoordinate!, zoom: 19)
+            let camera = GMSCameraPosition.camera(withTarget: currentLocationCoordinate!, zoom: cameraZoom)
             mapView.animate(to: camera)
         }
         return true
@@ -45,14 +50,34 @@ class PlacesOnTheMapViewController: UIViewController, CLLocationManagerDelegate,
     
     //MARK:- LocationManager delegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("Location manager")
         let lastLocation = locations.last
         if let currentLocation = lastLocation {
             currentLocationCoordinate = currentLocation.coordinate
-            let camera = GMSCameraPosition.camera(withTarget: currentLocation.coordinate, zoom: 19)
+            let camera = GMSCameraPosition.camera(withTarget: currentLocation.coordinate, zoom: cameraZoom)
             if let map = mapView {
                 map.animate(to: camera)
                 currentLocationMarker.position = currentLocation.coordinate
+                if task != nil {
+                    let placeFetchRequest = NSFetchRequest<Place>(entityName: "Place")
+                    let predicate = NSPredicate(format: "task = %@", task!)
+                    placeFetchRequest.predicate = predicate
+                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                    let managedObjectContext = appDelegate.persistentContainer.viewContext
+                    do {
+                        let places = try managedObjectContext.fetch(placeFetchRequest)
+                        for place in places {
+                            let name = place.value(forKey: "name") as! String
+                            let latitude = place.value(forKey: "latitude") as! Double
+                            let longitude = place.value(forKey: "longitude") as! Double
+                            let marker = GMSMarker(position: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+                            marker.title = name
+                            marker.appearAnimation = .pop
+                            marker.icon = GMSMarker.markerImage(with: UIColor.red)
+                            marker.map = map
+                        }
+                    } catch {
+                    }
+                }
             }
         }
     }

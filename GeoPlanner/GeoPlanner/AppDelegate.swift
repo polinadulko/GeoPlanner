@@ -10,7 +10,8 @@ import UIKit
 import CoreData
 import GoogleMaps
 
-let googleMapsAPIKey = "AIzaSyBr8dVFi0FdLrep7DsKEQl5aZwDR6bf-kA"
+let googleMapsAPIKey = "AIzaSyB6OUmlauPDTD8F-VLRm6D7TFl-keHM7hY"
+let noPlacesWereFoundDistance = 100000
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

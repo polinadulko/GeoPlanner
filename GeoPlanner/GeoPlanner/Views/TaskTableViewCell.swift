@@ -18,15 +18,18 @@ class TaskTableViewCell: UITableViewCell {
     var task: NSManagedObject? {
         didSet {
             nameLabel.text = task!.value(forKeyPath: "name") as? String
-            let isTaskConnectedToPlace = task!.value(forKey: "isConnectedToPlace") as! Bool
-            if isTaskConnectedToPlace {
-                let distanceInMeters = task!.value(forKey: "distanceInMeters") as! Int
-                if distanceInMeters < 1000 {
+            if let distanceInMeters = task!.value(forKey: "distanceInMeters") as! Int? {
+                if distanceInMeters == noPlacesWereFoundDistance {
+                    distanceLabel.text = "-"
+                }
+                else if distanceInMeters < 1000 {
                     distanceLabel.text =  "\(distanceInMeters) m"
                 } else {
                     let distanceInKm = Double(distanceInMeters)/1000
-                    distanceLabel.text = "\(distanceInKm) km"
+                    distanceLabel.text = String(format: "%.1f km", distanceInKm)
                 }
+            } else {
+                distanceLabel.text = ""
             }
         }
     }
@@ -44,11 +47,12 @@ class TaskTableViewCell: UITableViewCell {
         nameLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.6).isActive = true
         
         distanceLabel.numberOfLines = 1
+        distanceLabel.textAlignment = .center
         distanceLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(distanceLabel)
         distanceLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        distanceLabel.leftAnchor.constraint(equalTo: nameLabel.rightAnchor, constant: 35.0).isActive = true
-        distanceLabel.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.3).isActive = true
+        distanceLabel.leftAnchor.constraint(equalTo: nameLabel.rightAnchor, constant: 30).isActive = true
+        distanceLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
         
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(switchToInfoAboutPlacesView)))
     }
@@ -67,9 +71,16 @@ class TaskTableViewCell: UITableViewCell {
     
     //MARK:- Gesture Actions
     @objc func switchToInfoAboutPlacesView() {
-        let placesOnTheMapViewController = PlacesOnTheMapViewController()
-        if let controller = navigationController {
-            controller.pushViewController(placesOnTheMapViewController, animated: true)
+        if task != nil {
+            if let distance = task!.value(forKey: "distanceInMeters") as! Int? {
+                if distance != noPlacesWereFoundDistance {
+                    let infoAboutPlacesTabBarController = InfoAboutPlacesTabBarController()
+                    if let controller = navigationController {
+                        infoAboutPlacesTabBarController.task = task
+                        controller.pushViewController(infoAboutPlacesTabBarController, animated: true)
+                    }
+                }
+            }
         }
     }
     

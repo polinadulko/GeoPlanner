@@ -27,8 +27,6 @@ class AddTaskViewController: UIViewController, UITextViewDelegate, UIPickerViewD
     var selectedTypeOfPlace = "-"
     let typesOfPlaces = ["-", "Airport", "Amusement park", "Aquarium", "Art gallery", "ATM", "Bakery", "Bank", "Bar", "Beauty salon", "Bicycle store", "Book store", "Bus station", "Cafe", "Car dealer", "Car rental", "Car repair", "Car wash", "Casino", "City hall", "Clothing store", "Convenience store", "Dentist", "Department store", "Doctor", "Electronics store", "Embassy", "Florist", "Furniture store", "Gas station", "Gym", "Hair care", "Hardware store", "Home goods store", "Hospital", "Insurance agency", "Jewelry store", "Library", "Liquor store", "Locksmith", "Lodging", "Meal delivery", "Meal takeaway", "Movie theater", "Moving company", "Museum", "Park", "Parking", "Pet store", "Pharmacy", "Police", "Post office", "Real estate agency", "Restaurant", "School", "Shoe store", "Shopping mall", "Spa", "Stadium", "Store", "Subway station", "Supermarket", "Taxi stand", "Train station", "Travel agency", "Veterinary care", "Zoo"]
     let keywordForPlaceTextField = UITextField()
-    var connectedToPlaceBottomConstraint = NSLayoutConstraint()
-    var notConnectedToPlaceBottomConstraint = NSLayoutConstraint()
     var keyboardHeight:CGFloat?
     
     override func viewDidLoad() {
@@ -43,7 +41,7 @@ class AddTaskViewController: UIViewController, UITextViewDelegate, UIPickerViewD
         
         contentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(stopEditing)))
         
-        scrollView.showsVerticalScrollIndicator = true
+        scrollView.showsVerticalScrollIndicator = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(scrollView)
         scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -139,9 +137,8 @@ class AddTaskViewController: UIViewController, UITextViewDelegate, UIPickerViewD
         keywordForPlaceTextField.leftAnchor.constraint(equalTo: nameTextView.leftAnchor).isActive = true
         keywordForPlaceTextField.widthAnchor.constraint(equalTo: nameTextView.widthAnchor).isActive = true
         keywordForPlaceTextField.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: keywordForPlaceTextField.bottomAnchor, constant: 30).isActive = true
         
-        connectedToPlaceBottomConstraint = contentView.bottomAnchor.constraint(equalTo: keywordForPlaceTextField.bottomAnchor, constant: 40)
-        notConnectedToPlaceBottomConstraint = contentView.bottomAnchor.constraint(equalTo: connectToPlaceLabel.bottomAnchor, constant: 40)
         connectToPlaceSwitch.addTarget(self, action: #selector(isTaskConnectedToPlace(sender:)), for: .valueChanged)
         dontConnectTaskToPlace()
         
@@ -161,16 +158,12 @@ class AddTaskViewController: UIViewController, UITextViewDelegate, UIPickerViewD
         typeOfPlaceLabel.isHidden = false
         typeOfPlacePickerView.isHidden = false
         keywordForPlaceTextField.isHidden = false
-        connectedToPlaceBottomConstraint.isActive = true
-        notConnectedToPlaceBottomConstraint.isActive = false
     }
     
     func dontConnectTaskToPlace() {
         typeOfPlaceLabel.isHidden = true
         typeOfPlacePickerView.isHidden = true
         keywordForPlaceTextField.isHidden = true
-        connectedToPlaceBottomConstraint.isActive = false
-        notConnectedToPlaceBottomConstraint.isActive = true
     }
     
     @objc func stopEditing() {
@@ -256,7 +249,6 @@ class AddTaskViewController: UIViewController, UITextViewDelegate, UIPickerViewD
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedTypeOfPlace = convertTypeOfPlaceString(str: typesOfPlaces[row])
-        print(selectedTypeOfPlace)
     }
     
     //MARK:- Keyboard notifications
@@ -267,7 +259,7 @@ class AddTaskViewController: UIViewController, UITextViewDelegate, UIPickerViewD
                 let contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight!, right: 0)
                 scrollView.contentInset = contentInset
                 scrollView.scrollIndicatorInsets = contentInset
-                scrollView.setContentOffset(CGPoint(x: 0, y: 1.7*keyboardHeight!), animated: true)
+                scrollView.setContentOffset(CGPoint(x: 0, y: 1.75*keyboardHeight!), animated: true)
             }
         }
     }

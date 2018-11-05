@@ -13,8 +13,9 @@ import CoreLocation
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, CLLocationManagerDelegate {
     var addNewTaskBarButton = UIBarButtonItem()
     var tasksTableView = UITableView()
-    let taskCellIdentifier = "taskCell"
+    let taskCellIdentifier = "TaskCell"
     var managedObjectContext: NSManagedObjectContext?
+    let locationManager = CLLocationManager()
     var taskFetchedResultsController: NSFetchedResultsController<Task>? = nil
     var fetchedResultsController: NSFetchedResultsController<Task> {
         if taskFetchedResultsController != nil {
@@ -35,7 +36,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         return taskFetchedResultsController!
     }
-    let locationManager = CLLocationManager()
+    var currentLocation: CLLocation?
+    var canUpdateLocation = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +60,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tasksTableView.register(TaskTableViewCell.self, forCellReuseIdentifier: taskCellIdentifier)
         tasksTableView.rowHeight = UITableView.automaticDimension
         tasksTableView.estimatedRowHeight = 40
+        tasksTableView.tableFooterView = UIView(frame: .zero)
         tasksTableView.delegate = self
         tasksTableView.dataSource = self
         view.addSubview(tasksTableView)
@@ -84,23 +87,142 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    //MARK:- Interaction with GoogleMaps
+    func createNearbySearchURL(latitude: CLLocationDegrees, longitude: CLLocationDegrees, type: String, keyword: String) -> URL? {
+        let urlStr = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + String(latitude) + "," + String(longitude) + "&language=ru&type=" + type + "&keyword=" + keyword + "&rankby=distance&key=\(googleMapsAPIKey)"
+        return URL(string: urlStr)
+    }
+    
+    func getNearestPlaces(latitude: CLLocationDegrees, longitude: CLLocationDegrees, task: Task) {
+        var type = task.value(forKey: "typeOfPlace") as! String?
+        var keyword = task.value(forKey: "keywordForPlace") as! String?
+        if type == nil {
+            type = ""
+        }
+        if keyword == nil {
+            keyword = ""
+        }
+        let url = createNearbySearchURL(latitude: latitude, longitude: longitude, type: type!, keyword: keyword!)
+        let taskID = task.objectID
+        if let nearbySearchURL = url {
+            let request = URLRequest(url: nearbySearchURL)
+            let dataTask = URLSession.shared.dataTask(with: request) { data, response, error in
+                if error != nil {
+                    self.showAlert(info: "Can't get info from Google Places")
+                    return
+                }
+                if let receivedData = data {
+                    self.parseData(data: receivedData, userCoordinate: CLLocation(latitude: latitude, longitude: longitude), taskID: taskID)
+                }
+            }
+            dataTask.resume()
+        }
+    }
+    
+    func parseData(data: Data, userCoordinate: CLLocation, taskID: NSManagedObjectID) {
+        do {
+            if let context = managedObjectContext {
+                let privateMOC = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+                privateMOC.parent = context
+                let jsonResponse = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as! NSDictionary
+                let places = jsonResponse["results"] as! [AnyObject]
+                let task = try privateMOC.existingObject(with: taskID)
+                var isTaskDistanceSet = false
+                var openPlacesCount = 0
+                for place in places {
+                    if let geometry = place["geometry"] as! NSDictionary?, let location = geometry["location"] as! NSDictionary? {
+                        var isOpenNow = true
+                        if let openingHours = place["opening_hours"] as! NSDictionary? {
+                            if let openNow = openingHours["open_now"] as! Bool? {
+                                isOpenNow = openNow
+                            }
+                        }
+                        if isOpenNow {
+                            let placeEntity = NSEntityDescription.entity(forEntityName: "Place", in: privateMOC)
+                            if let entity = placeEntity {
+                                let newPlace = NSManagedObject(entity: entity, insertInto: privateMOC)
+                                let name = place["name"] as! String
+                                let address = place["vicinity"] as! String
+                                let lat = location["lat"] as! Double
+                                let lng = location["lng"] as! Double
+                                let placeCoordinate = CLLocation(latitude: lat, longitude: lng)
+                                let distance = placeCoordinate.distance(from: userCoordinate)
+                                
+                                newPlace.setValue(name, forKey: "name")
+                                newPlace.setValue(address, forKey: "address")
+                                newPlace.setValue(distance, forKey: "distanceInMeters")
+                                newPlace.setValue(lat, forKey: "latitude")
+                                newPlace.setValue(lng, forKey: "longitude")
+                                
+                                newPlace.setValue(task, forKey: "task")
+                                if !isTaskDistanceSet {
+                                    task.setValue(distance, forKey: "distanceInMeters")
+                                    isTaskDistanceSet = true
+                                }
+                                do {
+                                    try privateMOC.save()
+                                    managedObjectContext!.performAndWait {
+                                        do {
+                                            try managedObjectContext!.save()
+                                        } catch {
+                                            fatalError("Failure to save context: \(error)")
+                                        }
+                                    }
+                                } catch {
+                                    fatalError("Failure to save context: \(error)")
+                                }
+                                openPlacesCount = openPlacesCount + 1
+                            }
+                        }
+                    }
+                }
+                if openPlacesCount == 0 {
+                    task.setValue(noPlacesWereFoundDistance, forKey: "distanceInMeters")
+                    do {
+                        try privateMOC.save()
+                        managedObjectContext!.performAndWait {
+                            do {
+                                try managedObjectContext!.save()
+                            } catch {
+                                fatalError("Failure to save context: \(error)")
+                            }
+                        }
+                    } catch {
+                        fatalError("Failure to save context: \(error)")
+                    }
+                }
+            }
+        } catch {
+            showAlert(info: "Can't get info from Google Places")
+        }
+        canUpdateLocation = true
+    }
+    
     //MARK:- Location Manager delegate
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("Updated location")
-        let fetchRequest = NSFetchRequest<Task>(entityName: "Task")
-        if let context = managedObjectContext {
+        if canUpdateLocation == false {
+            return
+        } else {
+            canUpdateLocation = false
+        }
+        let currentLocation = locations.last
+        let tasksArray = fetchedResultsController.fetchedObjects
+        if let location = currentLocation, let tasks = tasksArray, let context = managedObjectContext {
+            self.currentLocation = location
             do {
-                let tasks = try context.fetch(fetchRequest)
-                for task in tasks {
-                    let connectedToPlace = task.value(forKey: "isConnectedToPlace") as! Bool
-                    if connectedToPlace {
-                        let distance = 2000
-                        task.setValue(distance, forKey: "distanceInMeters")
-                    }
+                let placeFetchRequest = NSFetchRequest<Place>(entityName: "Place")
+                let places = try context.fetch(placeFetchRequest)
+                for place in places {
+                    context.delete(place)
                 }
                 try context.save()
             } catch {
-                showAlert(info: "Can't update info connected with location")
+            }
+            for task in tasks {
+                let isConnectedToPlace = task.value(forKey: "isConnectedToPlace") as! Bool
+                if isConnectedToPlace {
+                    getNearestPlaces(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, task: task)
+                }
             }
         }
     }
@@ -149,7 +271,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tasksTableView.dequeueReusableCell(withIdentifier: taskCellIdentifier, for: indexPath) as! TaskTableViewCell
-        cell.task = fetchedResultsController.object(at: indexPath)
+        let task = fetchedResultsController.object(at: indexPath)
+        let isConnectedToPlace = task.value(forKey: "isConnectedToPlace") as! Bool
+        let distance = task.value(forKey: "distanceInMeters") as! Int?
+        if isConnectedToPlace && (distance == nil) && (currentLocation != nil) {
+            getNearestPlaces(latitude: currentLocation!.coordinate.latitude, longitude: currentLocation!.coordinate.longitude, task: task)
+        }
+        cell.task = task
         cell.navigationController = navigationController
         return cell
     }

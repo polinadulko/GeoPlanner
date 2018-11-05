@@ -2,7 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="18A391" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Place" representedClassName="Place" syncable="YES" codeGenerationType="class">
         <attribute name="address" attributeType="String" syncable="YES"/>
-        <attribute name="distanceInMeters" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="distanceInMeters" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
@@ -10,7 +10,7 @@
     </entity>
     <entity name="Task" representedClassName="Task" syncable="YES" codeGenerationType="class">
         <attribute name="date" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="distanceInMeters" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="distanceInMeters" optional="YES" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="isConnectedToPlace" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="keywordForPlace" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="moveToNextDay" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -19,7 +19,7 @@
         <relationship name="place" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Place" inverseName="task" inverseEntity="Place" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Task" positionX="-63" positionY="-18" width="128" height="165"/>
         <element name="Place" positionX="-54" positionY="45" width="128" height="135"/>
+        <element name="Task" positionX="-63" positionY="-18" width="128" height="165"/>
     </elements>
 </model>
