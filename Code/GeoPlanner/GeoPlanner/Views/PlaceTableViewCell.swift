@@ -16,7 +16,11 @@ class PlaceTableViewCell: UITableViewCell {
     var iconImageView = UIImageView()
     var iconURL: URL? {
         didSet {
-
+            Alamofire.request(iconURL!).responseData { (response) in
+                if response.error == nil {
+                    self.iconImageView.image = UIImage(data: response.data!)
+                }
+            }
         }
     }
     
@@ -25,7 +29,8 @@ class PlaceTableViewCell: UITableViewCell {
         self.selectionStyle = .none
         
         iconImageView = UIImageView(image: UIImage(named: "question"))
-        iconImageView.contentMode = .scaleToFill
+        iconImageView.contentMode = .scaleAspectFill
+        iconImageView.clipsToBounds = true
         iconImageView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(iconImageView)
         iconImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 15).isActive = true

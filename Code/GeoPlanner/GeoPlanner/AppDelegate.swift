@@ -29,9 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             appWindow.rootViewController = navigationController
             appWindow.makeKeyAndVisible()
         }
-        
         GMSServices.provideAPIKey(googleMapsAPIKey)
-        
         return true
     }
 
@@ -62,9 +60,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Core Data stack
 
     lazy var persistentContainer: NSPersistentContainer = {
-        let path = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)
-        print("\(path)")
-        
         /*
          The persistent container for the application. This implementation
          creates and returns a container, having loaded the store for the

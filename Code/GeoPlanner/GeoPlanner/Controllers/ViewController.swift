@@ -41,7 +41,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        deleteExpiredTasks()
+        updateExpiredTasks()
         
         locationManager.delegate = self
         locationManager.distanceFilter = 300
@@ -65,21 +65,28 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tasksTableView.dataSource = self
         view.addSubview(tasksTableView)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(deleteExpiredTasks), name: NSNotification.Name.NSCalendarDayChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateExpiredTasks), name: NSNotification.Name.NSCalendarDayChanged, object: nil)
     }
     
-    @objc func deleteExpiredTasks() {
-        let fetchRequest = NSFetchRequest<Task>(entityName: "Task")
-        let currentDate = Calendar.current.startOfDay(for: Date())
-        let datePredicate = NSPredicate(format: "date < %@ AND moveToNextDay = %@", argumentArray: [currentDate, false])
-        fetchRequest.predicate = datePredicate
+    @objc func updateExpiredTasks() {
         if let context = managedObjectContext {
             do {
-                let tasks = try context.fetch(fetchRequest)
+                let fetchRequest = NSFetchRequest<Task>(entityName: "Task")
+                let currentDate = Calendar.current.startOfDay(for: Date())
+                var datePredicate = NSPredicate(format: "date < %@ AND moveToNextDay = %@", argumentArray: [currentDate, false])
+                fetchRequest.predicate = datePredicate
+                var tasks = try context.fetch(fetchRequest)
                 for task in tasks {
                     context.delete(task)
                 }
                 try context.save()
+                datePredicate = NSPredicate(format: "date < %@ AND moveToNextDay = %@", argumentArray: [currentDate, true])
+                fetchRequest.predicate = datePredicate
+                tasks = try context.fetch(fetchRequest)
+                for task in tasks {
+                    task.setValue(currentDate, forKey: "date")
+                    try task.managedObjectContext!.save()
+                }
             }
             catch {
                 showAlert(info: "Can't update list of tasks")
