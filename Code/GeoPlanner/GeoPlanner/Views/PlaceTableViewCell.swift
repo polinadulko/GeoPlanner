@@ -16,9 +16,13 @@ class PlaceTableViewCell: UITableViewCell {
     var iconImageView = UIImageView()
     var iconURL: URL? {
         didSet {
-            Alamofire.request(iconURL!).responseData { (response) in
-                if response.error == nil {
-                    self.iconImageView.image = UIImage(data: response.data!)
+            if let reachabilityManager = networkReachabilityManager {
+                if reachabilityManager.isReachable {
+                    request(iconURL!).response { (response) in
+                        if response.error == nil {
+                            self.iconImageView.image = UIImage(data: response.data!)
+                        }
+                    }
                 }
             }
         }

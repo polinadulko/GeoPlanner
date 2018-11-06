@@ -71,9 +71,9 @@ class TaskTableViewCell: UITableViewCell {
     
     //MARK:- Gesture Actions
     @objc func switchToInfoAboutPlacesView() {
-        if task != nil {
-            if let distance = task!.value(forKey: "distanceInMeters") as! Int? {
-                if distance != noPlacesWereFoundDistance {
+        if let selectedTask = task, let reachabilityManager = networkReachabilityManager {
+            if let distance = selectedTask.value(forKey: "distanceInMeters") as! Int? {
+                if distance != noPlacesWereFoundDistance && reachabilityManager.isReachable {
                     let infoAboutPlacesTabBarController = InfoAboutPlacesTabBarController()
                     if let controller = navigationController {
                         infoAboutPlacesTabBarController.task = task

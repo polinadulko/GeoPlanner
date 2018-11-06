@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import CoreLocation
+import Alamofire
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, CLLocationManagerDelegate {
     var addNewTaskBarButton = UIBarButtonItem()
@@ -102,27 +103,26 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func getNearestPlaces(latitude: CLLocationDegrees, longitude: CLLocationDegrees, task: Task) {
         var type = task.value(forKey: "typeOfPlace") as! String?
-        var keyword = task.value(forKey: "keywordForPlace") as! String?
         if type == nil {
             type = ""
         }
+        var keyword = task.value(forKey: "keywordForPlace") as! String?
         if keyword == nil {
             keyword = ""
         }
-        let url = createNearbySearchURL(latitude: latitude, longitude: longitude, type: type!, keyword: keyword!)
         let taskID = task.objectID
-        if let nearbySearchURL = url {
-            let request = URLRequest(url: nearbySearchURL)
-            let dataTask = URLSession.shared.dataTask(with: request) { data, response, error in
-                if error != nil {
-                    self.showAlert(info: "Can't get info from Google Places")
-                    return
-                }
-                if let receivedData = data {
-                    self.parseData(data: receivedData, userCoordinate: CLLocation(latitude: latitude, longitude: longitude), taskID: taskID)
+        if let reachabilityManager = networkReachabilityManager, let url = createNearbySearchURL(latitude: latitude, longitude: longitude, type: type!, keyword: keyword!) {
+            if reachabilityManager.isReachable {
+                request(url).response { (response) in
+                    if response.error != nil {
+                        DispatchQueue.main.sync {
+                            self.showAlert(info: "Can't get info from Google Places")
+                        }
+                    } else {
+                        self.parseData(data: response.data!, userCoordinate: CLLocation(latitude: latitude, longitude: longitude), taskID: taskID)
+                    }
                 }
             }
-            dataTask.resume()
         }
     }
     
@@ -214,7 +214,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 }
             }
         } catch {
-            showAlert(info: "Can't get info from Google Places")
+            DispatchQueue.main.sync {
+                showAlert(info: "Can't get info from Google Places")
+            }
         }
         canUpdateLocation = true
     }

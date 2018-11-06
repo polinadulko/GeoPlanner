@@ -23,7 +23,11 @@ class PlacesOnTheMapViewController: UIViewController, CLLocationManagerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager.delegate = self
-        mapView = GMSMapView(frame: UIScreen.main.bounds)
+        if let reachabilityManager = networkReachabilityManager {
+            if reachabilityManager.isReachable {
+                mapView = GMSMapView(frame: UIScreen.main.bounds)
+            }
+        }
         if let map = mapView {
             map.delegate = self
             map.settings.myLocationButton = true
