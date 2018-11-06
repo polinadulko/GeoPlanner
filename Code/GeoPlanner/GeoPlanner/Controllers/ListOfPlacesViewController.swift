@@ -66,6 +66,8 @@ class ListOfPlacesViewController: UIViewController, UITableViewDelegate, UITable
             }
             if let photoURLArray = place.value(forKey: "photos") as! [URL]? {
                 cell.iconURL = photoURLArray[0]
+            } else {
+                cell.iconURL = nil
             }
         }
         return cell

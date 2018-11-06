@@ -16,14 +16,19 @@ class PlaceTableViewCell: UITableViewCell {
     var iconImageView = UIImageView()
     var iconURL: URL? {
         didSet {
-            if let reachabilityManager = networkReachabilityManager {
-                if reachabilityManager.isReachable {
-                    request(iconURL!).response { (response) in
-                        if response.error == nil {
-                            self.iconImageView.image = UIImage(data: response.data!)
-                        }
+            guard let networkReachabilityManager = NetworkReachabilityManager() else {
+                iconImageView.image = UIImage(named: "question")
+                return
+            }
+            networkReachabilityManager.startListening()
+            if networkReachabilityManager.isReachable && iconURL != nil {
+                request(iconURL!).response { (response) in
+                    if response.error == nil {
+                        self.iconImageView.image = UIImage(data: response.data!)
                     }
                 }
+            } else {
+                iconImageView.image = UIImage(named: "question")
             }
         }
     }

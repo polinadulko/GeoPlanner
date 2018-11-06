@@ -111,8 +111,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             keyword = ""
         }
         let taskID = task.objectID
-        if let reachabilityManager = networkReachabilityManager, let url = createNearbySearchURL(latitude: latitude, longitude: longitude, type: type!, keyword: keyword!) {
-            if reachabilityManager.isReachable {
+        if let url = createNearbySearchURL(latitude: latitude, longitude: longitude, type: type!, keyword: keyword!) {
+            guard let networkReachabilityManager = NetworkReachabilityManager() else {
+                return
+            }
+            networkReachabilityManager.startListening()
+            if networkReachabilityManager.isReachable {
                 request(url).response { (response) in
                     if response.error != nil {
                         DispatchQueue.main.sync {

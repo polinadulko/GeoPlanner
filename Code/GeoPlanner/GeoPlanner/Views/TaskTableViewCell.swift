@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Alamofire
 
 class TaskTableViewCell: UITableViewCell {
     var nameLabel = UILabel()
@@ -71,9 +72,13 @@ class TaskTableViewCell: UITableViewCell {
     
     //MARK:- Gesture Actions
     @objc func switchToInfoAboutPlacesView() {
-        if let selectedTask = task, let reachabilityManager = networkReachabilityManager {
+        if let selectedTask = task {
             if let distance = selectedTask.value(forKey: "distanceInMeters") as! Int? {
-                if distance != noPlacesWereFoundDistance && reachabilityManager.isReachable {
+                guard let networkReachabilityManager = NetworkReachabilityManager() else {
+                    return
+                }
+                networkReachabilityManager.startListening()
+                if distance != noPlacesWereFoundDistance && networkReachabilityManager.isReachable {
                     let infoAboutPlacesTabBarController = InfoAboutPlacesTabBarController()
                     if let controller = navigationController {
                         infoAboutPlacesTabBarController.task = task

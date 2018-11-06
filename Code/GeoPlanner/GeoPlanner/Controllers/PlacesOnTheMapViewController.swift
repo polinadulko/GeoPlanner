@@ -10,6 +10,7 @@ import UIKit
 import GoogleMaps
 import CoreLocation
 import CoreData
+import Alamofire
 
 class PlacesOnTheMapViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
     let locationManager = CLLocationManager()
@@ -23,10 +24,12 @@ class PlacesOnTheMapViewController: UIViewController, CLLocationManagerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager.delegate = self
-        if let reachabilityManager = networkReachabilityManager {
-            if reachabilityManager.isReachable {
-                mapView = GMSMapView(frame: UIScreen.main.bounds)
-            }
+        guard let networkReachabilityManager = NetworkReachabilityManager() else {
+            return
+        }
+        networkReachabilityManager.startListening()
+        if networkReachabilityManager.isReachable {
+            mapView = GMSMapView(frame: UIScreen.main.bounds)
         }
         if let map = mapView {
             map.delegate = self
