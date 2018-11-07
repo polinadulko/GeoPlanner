@@ -190,7 +190,13 @@ class AddTaskViewController: UIViewController, UITextViewDelegate, UIPickerViewD
                         newTask.setValue(selectedTypeOfPlace, forKey: "typeOfPlace")
                     }
                     if !(keywordForPlaceTextField.text?.isEmpty)! {
-                        newTask.setValue(keywordForPlaceTextField.text, forKey: "keywordForPlace")
+                        var keywordText = keywordForPlaceTextField.text!
+                        keywordText = keywordText.replacingOccurrences(of: " ", with: "")
+                        if let keyword = keywordText.applyingTransform(.toLatin, reverse: false) {
+                            newTask.setValue(keyword, forKey: "keywordForPlace")
+                        } else {
+                            newTask.setValue(keywordText, forKey: "keywordForPlace")
+                        }
                     }
                 }
                 do {

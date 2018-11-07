@@ -13,7 +13,7 @@ class InfoAboutPlacesTabBarController: UITabBarController {
     let listOfPlacesViewController = ListOfPlacesViewController()
     let placesOnTheMapViewController = PlacesOnTheMapViewController()
     var listOfPlacesTabBarItem = UITabBarItem()
-    var placesOnTheMapTabBarItem = UITabBarItem()
+    var mapTabBarItem = UITabBarItem()
     var backBarButton = UIBarButtonItem()
     var task: NSManagedObject? {
         didSet {
@@ -28,8 +28,8 @@ class InfoAboutPlacesTabBarController: UITabBarController {
         navigationItem.leftBarButtonItem = backBarButton
         listOfPlacesTabBarItem = UITabBarItem(title: "List", image: UIImage(named: "ListTabBarImage"), tag: 0)
         listOfPlacesViewController.tabBarItem = listOfPlacesTabBarItem
-        placesOnTheMapTabBarItem = UITabBarItem(title: "Map", image: UIImage(named: "MapTabBarImage"), tag: 1)
-        placesOnTheMapViewController.tabBarItem = placesOnTheMapTabBarItem
+        mapTabBarItem = UITabBarItem(title: "Map", image: UIImage(named: "MapTabBarImage"), tag: 1)
+        placesOnTheMapViewController.tabBarItem = mapTabBarItem
         viewControllers = [listOfPlacesViewController, placesOnTheMapViewController]
     }
     

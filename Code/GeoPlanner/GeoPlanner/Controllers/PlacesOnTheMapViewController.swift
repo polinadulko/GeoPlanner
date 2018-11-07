@@ -86,8 +86,7 @@ class PlacesOnTheMapViewController: UIViewController, CLLocationManagerDelegate,
                             let longitude = place.value(forKey: "longitude") as! Double
                             
                             let marker = GMSMarker(position: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
-                            marker.title = name
-                            marker.snippet = address
+                            marker.snippet = name + "\n" + address
                             marker.appearAnimation = .pop
                             marker.icon = GMSMarker.markerImage(with: UIColor.red)
                             marker.map = map

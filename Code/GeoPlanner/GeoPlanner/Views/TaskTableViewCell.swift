@@ -14,8 +14,6 @@ class TaskTableViewCell: UITableViewCell {
     var nameLabel = UILabel()
     var distanceLabel = UILabel()
     var navigationController: UINavigationController?
-    var originalCenter = CGPoint()
-    var shouldTaskBeDeleted = false
     var task: NSManagedObject? {
         didSet {
             nameLabel.text = task!.value(forKeyPath: "name") as? String

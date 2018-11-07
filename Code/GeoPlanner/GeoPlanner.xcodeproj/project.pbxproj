@@ -56,6 +56,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		520B016B219320820007C25D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				52FB3FF52186EC820008B3EB /* Extensions.swift */,
+				527B834B2182136E00D7344A /* PlacesOnTheMapViewController.swift */,
+				52FB3FFD218798CC0008B3EB /* ListOfPlacesViewController.swift */,
+				52FB3FFB2187988A0008B3EB /* InfoAboutPlacesTabBarController.swift */,
+				527B83362181DC2E00D7344A /* ViewController.swift */,
+				527B83492181E5CA00D7344A /* AddTaskViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		520B016C219320B50007C25D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				523C8051218846B3006ACF2B /* PlaceTableViewCell.swift */,
+				52FB3FF72186FBA00008B3EB /* TaskTableViewCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		527B83282181DC2E00D7344A = {
 			isa = PBXGroup;
 			children = (
@@ -83,32 +105,10 @@
 				527B833E2181DC2F00D7344A /* Assets.xcassets */,
 				527B83432181DC2F00D7344A /* Info.plist */,
 				527B833B2181DC2E00D7344A /* GeoPlanner.xcdatamodeld */,
-				52FB3FFA218702F50008B3EB /* Controllers */,
-				52FB3FF9218702EA0008B3EB /* Views */,
+				520B016B219320820007C25D /* Controllers */,
+				520B016C219320B50007C25D /* Views */,
 			);
 			path = GeoPlanner;
-			sourceTree = "<group>";
-		};
-		52FB3FF9218702EA0008B3EB /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				52FB3FF72186FBA00008B3EB /* TaskTableViewCell.swift */,
-				523C8051218846B3006ACF2B /* PlaceTableViewCell.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		52FB3FFA218702F50008B3EB /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				527B83492181E5CA00D7344A /* AddTaskViewController.swift */,
-				527B83362181DC2E00D7344A /* ViewController.swift */,
-				52FB3FFB2187988A0008B3EB /* InfoAboutPlacesTabBarController.swift */,
-				52FB3FFD218798CC0008B3EB /* ListOfPlacesViewController.swift */,
-				527B834B2182136E00D7344A /* PlacesOnTheMapViewController.swift */,
-				52FB3FF52186EC820008B3EB /* Extensions.swift */,
-			);
-			path = Controllers;
 			sourceTree = "<group>";
 		};
 		847B5CC9F58D06CECCE81163 /* Pods */ = {
