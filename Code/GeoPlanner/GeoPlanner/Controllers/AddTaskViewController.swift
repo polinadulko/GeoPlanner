@@ -29,8 +29,15 @@ class AddTaskViewController: UIViewController, UITextViewDelegate, UIPickerViewD
     let keywordForPlaceTextField = UITextField()
     var keyboardHeight:CGFloat?
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.view.center.y = self.view.center.y - UIScreen.main.bounds.height
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        UIView.animate(withDuration: 0.5) {
+            self.view.center.y = self.view.center.y + UIScreen.main.bounds.height
+        }
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         managedObjectContext = appDelegate.persistentContainer.viewContext
         
