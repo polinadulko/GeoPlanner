@@ -125,6 +125,7 @@ class AddTaskViewController: UIViewController {
         typeOfPlaceLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 30).isActive = true
         
         typeOfPlacePickerView.delegate = self
+        typeOfPlacePickerView.dataSource = self
         typeOfPlacePickerView.layer.borderColor = UIColor.lightGray.cgColor
         typeOfPlacePickerView.layer.borderWidth = 0.1
         typeOfPlacePickerView.layer.cornerRadius = 5
@@ -248,8 +249,8 @@ class AddTaskViewController: UIViewController {
     }
 }
 
-//MARK:- UIPickerViewDelegate
-extension AddTaskViewController: UIPickerViewDelegate {
+//MARK:- UIPickerViewDelegate, UIPickerViewDataSource
+extension AddTaskViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }

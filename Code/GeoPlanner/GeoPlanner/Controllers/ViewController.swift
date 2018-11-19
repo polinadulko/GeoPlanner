@@ -62,6 +62,7 @@ class ViewController: UIViewController {
         tasksTableView.rowHeight = UITableView.automaticDimension
         tasksTableView.estimatedRowHeight = 40
         tasksTableView.tableFooterView = UIView(frame: .zero)
+        tasksTableView.delegate = self
         tasksTableView.dataSource = self
         view.addSubview(tasksTableView)
         
@@ -269,8 +270,8 @@ extension ViewController: NSFetchedResultsControllerDelegate {
     }
 }
 
-//MARK:- UITableViewDataSource
-extension ViewController: UITableViewDataSource {
+//MARK:- UITableViewDelegate, UITableViewDataSource
+extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return self.fetchedResultsController.sections?.count ?? 0
     }
