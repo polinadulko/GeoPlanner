@@ -11,7 +11,7 @@ import CoreData
 import CoreLocation
 import Alamofire
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, CLLocationManagerDelegate {
+class ViewController: UIViewController {
     var addNewTaskBarButton = UIBarButtonItem()
     var tasksTableView = UITableView()
     let taskCellIdentifier = "TaskCell"
@@ -62,7 +62,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tasksTableView.rowHeight = UITableView.automaticDimension
         tasksTableView.estimatedRowHeight = 40
         tasksTableView.tableFooterView = UIView(frame: .zero)
-        tasksTableView.delegate = self
         tasksTableView.dataSource = self
         view.addSubview(tasksTableView)
         
@@ -225,7 +224,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         canUpdateLocation = true
     }
     
-    //MARK:- Location Manager delegate
+    //MARK:- Bar Buttons actions
+    @objc func switchToAddNewTaskView() {
+        let addTaskViewController = AddTaskViewController()
+        navigationController?.pushViewController(addTaskViewController, animated: true)
+    }
+}
+
+//MARK:- CLLocationManagerDelegate
+extension ViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if canUpdateLocation == false {
             return
@@ -253,14 +260,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             }
         }
     }
-    
-    //MARK:- Bar Buttons actions
-    @objc func switchToAddNewTaskView() {
-        let addTaskViewController = AddTaskViewController()
-        navigationController?.pushViewController(addTaskViewController, animated: true)
+}
+
+//MARK: - NSFetchedResultsControllerDelegate
+extension ViewController: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        self.tasksTableView.reloadData()
     }
-    
-    //MARK:- TableView protocols
+}
+
+//MARK:- UITableViewDataSource
+extension ViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return self.fetchedResultsController.sections?.count ?? 0
     }
@@ -328,10 +338,4 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         markAsCompletedAction.backgroundColor = UIColor.init(red: 252/255, green: 33/255, blue: 37/255, alpha: 1.0)
         return [markAsCompletedAction]
     }
-    
-    //MARK: - FetchedResultsController delegate
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        self.tasksTableView.reloadData()
-    }
 }
-

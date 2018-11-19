@@ -36,5 +36,4 @@ class InfoAboutPlacesTabBarController: UITabBarController {
     @objc func switchToMainView() {
         navigationController?.popViewController(animated: true)
     }
-    
 }

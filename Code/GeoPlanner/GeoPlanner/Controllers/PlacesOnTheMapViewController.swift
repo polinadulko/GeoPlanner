@@ -12,7 +12,7 @@ import CoreLocation
 import CoreData
 import Alamofire
 
-class PlacesOnTheMapViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
+class PlacesOnTheMapViewController: UIViewController {
     let locationManager = CLLocationManager()
     var mapView: GMSMapView?
     var currentLocationCoordinate: CLLocationCoordinate2D?
@@ -24,9 +24,7 @@ class PlacesOnTheMapViewController: UIViewController, CLLocationManagerDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager.delegate = self
-        guard let networkReachabilityManager = NetworkReachabilityManager() else {
-            return
-        }
+        guard let networkReachabilityManager = NetworkReachabilityManager() else { return }
         networkReachabilityManager.startListening()
         if networkReachabilityManager.isReachable {
             mapView = GMSMapView(frame: UIScreen.main.bounds)
@@ -45,24 +43,10 @@ class PlacesOnTheMapViewController: UIViewController, CLLocationManagerDelegate,
             currentLocationMarker.icon = GMSMarker.markerImage(with: UIColor.green)
         }
     }
-    
-    //MARK:- GMSMapViewDelegate
-    func didTapMyLocationButton(for mapView: GMSMapView) -> Bool {
-        if currentLocationCoordinate != nil {
-            let camera = GMSCameraPosition.camera(withTarget: currentLocationCoordinate!, zoom: cameraZoom)
-            mapView.animate(to: camera)
-        }
-        return true
-    }
-    
-    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
-        mapView.selectedMarker = marker
-        let selectedMarkerCamera = GMSCameraPosition.camera(withTarget: marker.position, zoom: cameraZoomForMarker)
-        mapView.animate(to: selectedMarkerCamera)
-        return true
-    }
-    
-    //MARK:- LocationManager delegate
+}
+
+//MARK:- CLLocationManagerDelegate
+extension PlacesOnTheMapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let lastLocation = locations.last
         if let currentLocation = lastLocation {
@@ -97,5 +81,22 @@ class PlacesOnTheMapViewController: UIViewController, CLLocationManagerDelegate,
             }
         }
     }
+}
 
+//MARK:- GMSMapViewDelegate
+extension PlacesOnTheMapViewController: GMSMapViewDelegate {
+    func didTapMyLocationButton(for mapView: GMSMapView) -> Bool {
+        if currentLocationCoordinate != nil {
+            let camera = GMSCameraPosition.camera(withTarget: currentLocationCoordinate!, zoom: cameraZoom)
+            mapView.animate(to: camera)
+        }
+        return true
+    }
+    
+    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+        mapView.selectedMarker = marker
+        let selectedMarkerCamera = GMSCameraPosition.camera(withTarget: marker.position, zoom: cameraZoomForMarker)
+        mapView.animate(to: selectedMarkerCamera)
+        return true
+    }
 }

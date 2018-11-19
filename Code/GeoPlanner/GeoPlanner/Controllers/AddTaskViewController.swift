@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class AddTaskViewController: UIViewController, UITextViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class AddTaskViewController: UIViewController {
     var saveBarButtonItem = UIBarButtonItem()
     var cancelBarButtonItem = UIBarButtonItem()
     var managedObjectContext: NSManagedObjectContext?
@@ -125,7 +125,6 @@ class AddTaskViewController: UIViewController, UITextViewDelegate, UIPickerViewD
         typeOfPlaceLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 30).isActive = true
         
         typeOfPlacePickerView.delegate = self
-        typeOfPlacePickerView.dataSource = self
         typeOfPlacePickerView.layer.borderColor = UIColor.lightGray.cgColor
         typeOfPlacePickerView.layer.borderWidth = 0.1
         typeOfPlacePickerView.layer.cornerRadius = 5
@@ -227,22 +226,30 @@ class AddTaskViewController: UIViewController, UITextViewDelegate, UIPickerViewD
         navigationController?.popViewController(animated: true)
     }
     
-    //MARK:- TextView Delegate
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if nameTextView.textColor == UIColor.lightGray {
-            textView.text = nil
-            textView.textColor = UIColor.black
+    //MARK:- Keyboard notifications
+    @objc func keyboardWillShow(notification: Notification) {
+        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            if keywordForPlaceTextField.isEditing {
+                keyboardHeight = keyboardFrame.cgRectValue.height
+                let contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight!, right: 0)
+                scrollView.contentInset = contentInset
+                scrollView.scrollIndicatorInsets = contentInset
+                scrollView.setContentOffset(CGPoint(x: 0, y: 1.75*keyboardHeight!), animated: true)
+            }
         }
     }
     
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if nameTextView.text.isEmpty {
-            textView.text = nameTextViewPlaceholder
-            textView.textColor = UIColor.lightGray
+    @objc func keyboardWillHide() {
+        if keyboardHeight != nil {
+            scrollView.contentInset = .zero
+            scrollView.scrollIndicatorInsets = .zero
+            keyboardHeight = nil
         }
     }
-    
-    //MARK:- PickerView Protocols
+}
+
+//MARK:- UIPickerViewDelegate
+extension AddTaskViewController: UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -263,25 +270,21 @@ class AddTaskViewController: UIViewController, UITextViewDelegate, UIPickerViewD
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedTypeOfPlace = convertTypeOfPlaceString(str: typesOfPlaces[row])
     }
-    
-    //MARK:- Keyboard notifications
-    @objc func keyboardWillShow(notification: Notification) {
-        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            if keywordForPlaceTextField.isEditing {
-                keyboardHeight = keyboardFrame.cgRectValue.height
-                let contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardHeight!, right: 0)
-                scrollView.contentInset = contentInset
-                scrollView.scrollIndicatorInsets = contentInset
-                scrollView.setContentOffset(CGPoint(x: 0, y: 1.75*keyboardHeight!), animated: true)
-            }
+}
+
+//MARK:- UITextViewDelegate
+extension AddTaskViewController: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if nameTextView.textColor == UIColor.lightGray {
+            textView.text = nil
+            textView.textColor = UIColor.black
         }
     }
     
-    @objc func keyboardWillHide() {
-        if keyboardHeight != nil {
-            scrollView.contentInset = .zero
-            scrollView.scrollIndicatorInsets = .zero
-            keyboardHeight = nil
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if nameTextView.text.isEmpty {
+            textView.text = nameTextViewPlaceholder
+            textView.textColor = UIColor.lightGray
         }
     }
 }

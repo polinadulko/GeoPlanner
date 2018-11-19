@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ListOfPlacesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ListOfPlacesViewController: UIViewController {
     var placesTableView = UITableView()
     let placeCellIdentifier = "PlaceCell"
     var places: [NSManagedObject]?
@@ -45,7 +45,10 @@ class ListOfPlacesViewController: UIViewController, UITableViewDelegate, UITable
         placesTableView.dataSource = self
         view.addSubview(placesTableView)
     }
+}
 
+//MARK:- UITableViewDelegate, UITableViewDataSource
+extension ListOfPlacesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return places?.count ?? 0
     }
@@ -72,5 +75,4 @@ class ListOfPlacesViewController: UIViewController, UITableViewDelegate, UITable
         }
         return cell
     }
-    
 }
