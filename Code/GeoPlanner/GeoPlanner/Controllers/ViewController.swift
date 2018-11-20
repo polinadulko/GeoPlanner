@@ -296,8 +296,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
                     return "Tomorrow"
                 } else if differenceInDays > 1 && differenceInDays < 6 {
                     let weekday = Calendar.current.component(.weekday, from: dateForSection)
-                    let listOfWeekdays = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
-                    return listOfWeekdays[weekday]
+                    let listOfWeekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+                    return listOfWeekdays[weekday-1]
                 }
             }
             let formatter = DateFormatter()
